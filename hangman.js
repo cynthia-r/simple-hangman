@@ -18,10 +18,12 @@ var resultBox = document.getElementById('result');
 // Initialize the game
 var guessedIndices = [];
 var guessedLetters = []; // used?
+var pastGuessesText = "";
 var misses = 0;
 
 // Renders the word
 function renderWord(){
+  // Render the current state of the word
   var currentWord = "";
   for(i=0; i<word.length; i++){
     // Render guessed letters
@@ -32,8 +34,7 @@ function renderWord(){
     else{
       currentWord += '-';
     }
-  }
-  //alert(currentWord);  
+  }    
   return currentWord;
 }
 
@@ -60,6 +61,7 @@ function guess(){
   
   // Add to the letters already guessed
   guessedLetters.push(nextGuess);
+  pastGuessesText += nextGuess;
     
   // Loop to find matches in the word
   var isMatch = false;
@@ -69,18 +71,6 @@ function guess(){
       isMatch = true;
     }      
   }
-  
-  /*// Other implementation  
-  var currentIndex = -1;
-  var found = false;
-  do{
-    found = word.indexOf(nextGuess, currentIndex);
-    if (found > -1){
-      guessedIndices.push(found);
-      currentIndex = found + 1;
-    }
-  }while(found > -1);
-  isMatch = currentIndex > 0;*/
   
   // Increment counter if guess is a miss
   if (!isMatch)
@@ -94,6 +84,9 @@ function guess(){
   
   // Update the word
   wordBox.innerText = renderWord();
+  
+  // Update the past guesses
+  pastGuessesBox.innerText = pastGuessesText;
   
   // Check if won
   if (guessedIndices.length == word.length){
